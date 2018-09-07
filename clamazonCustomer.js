@@ -45,7 +45,11 @@ function placeOrder(id, amount) {
         if (err) throw err;
         results = results[0];
 
-        if (results.stock_quantity >= amount) {
+        if (!results) {
+            console.log(`Clamazon does not have a product with an ID of ${id}`)
+            startTransaction();
+        }
+        else if (results.stock_quantity >= amount) {
             connection.query("UPDATE products SET ? WHERE ?",
                 [
                     {
